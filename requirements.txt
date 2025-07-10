@@ -1,0 +1,10 @@
+numpy
+pandas
+scikit-learn
+joblib
+nltk==3.8.1
+matplotlib
+seaborn
+deep-translator
+Flask
+Flask-Cors
