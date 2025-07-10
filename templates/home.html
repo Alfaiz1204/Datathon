@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Asisten Diagnosa Penyakit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+
+<body>
+
+    <nav aria-label="Primary navigation">
+        <a href="#" class="active" aria-current="page">Selamat Datang</a>
+        <a href="#">Home</a>
+        <a href="chatbot.html">Chatbot</a>
+    </nav>
+
+    <main class="main-container" role="main" aria-labelledby="main-title">
+        <h1 id="main-title" class="text-center font-extrabold text-4xl mb-12">Asisten Diagnosa Penyakit</h1>
+
+        <section class="content-card" aria-label="Bagaimana Asisten Diagnosa Penyakit Bekerja Section">
+            <div class="image-container" role="img" aria-label="Chatbot icon">
+                <img src="{{ url_for('static', filename='image/chatbot_icon.png') }}" alt="Chatbot Icon" loading="lazy" />
+            </div>
+
+            <div class="text-content">
+                <h2>Bagaimana Asisten Diagnosa Penyakit Bekerja</h2>
+                <p>
+                    Asisten ini membantu dokter untuk diagnosa penyakit dengan cara menanyakan gejala-gejala yang dialami pasien.<br /> masukkan gejala-gejala yang dialami pasien untuk mendapatkan diagnosa kemungkinan penyakit yang diderita pasien.
+                </p>
+
+                <div class="highlight-section">
+                    <a href="chatbot.html" class="highlight-icon" aria-label="Go to Chatbot">
+                        <img src="{{ url_for('static', filename='image/message.webp') }}" alt="Message Icon" style="width: 32px; height: 32px; display: block; margin: auto;" />
+                    </a>
+                    <p>
+                        Masukkan gejala - gejala yang dialami pasien dengan mengklik Chatbox, lalu Anda akan mendapatkan kemungkinan kondisi penyakit yang akurat.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Asisten Diagnosa Penyakit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+</head>
+
+<body>
+    <header class="header" role="banner" aria-label="Symptom checker header">
+        <div class="icon" aria-hidden="true">
+            <img src="{{ url_for('static', filename='image/image.png') }}" alt="Logo" style="width: 36px; height: 36px; object-fit: contain; border-radius: 50%; background: #fff;" />
+        </div>
+        <div class="text-group">
+            <div class="title">Asisten Diagnosa Penyakit</div>
+            <div class="subtitle">Hi, masukkan gejala-gejala yang dialami pasien untuk mendapatkan diagnosa kemungkinan penyakit yang diderita pasien.</div>
+        </div>
+    </header>
+
+    <main class="chat-container" id="chatContainer" role="log" aria-live="polite" aria-relevant="additions" tabindex="0">
+        <!-- Chat messages will be appended here -->
+    </main>
+
+    <form class="input-area" id="chatForm" aria-label="Send a message">
+        <input type="text" id="chatInput" autocomplete="off" placeholder="Write a message..." aria-label="Message input" aria-required="true" required />
+        <button type="submit" aria-label="Send message" disabled>Send</button>
+    </form>
+
+    <script>
+        (function() {
+            const chatForm = document.getElementById('chatForm');
+            const chatInput = document.getElementById('chatInput');
+            const chatContainer = document.getElementById('chatContainer');
+            const sendBtn = chatForm.querySelector('button[type="submit"]');
+
+            // Enable or disable send button based on input content
+            chatInput.addEventListener('input', () => {
+                sendBtn.disabled = chatInput.value.trim().length === 0;
+            });
+
+            // Append new messages to chat container
+            function appendMessage(text, sender = 'bot') {
+                const msgDiv = document.createElement('div');
+                msgDiv.classList.add('message');
+                msgDiv.classList.add(sender === 'user' ? 'user' : 'bot');
+                msgDiv.innerHTML = text.replace(/\n/g, "<br>");
+                chatContainer.appendChild(msgDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Simple bot response simulation (can be extended)
+            // Kirim ke backend Flask
+            async function botReply(userText) {
+                try {
+                    const res = await fetch("/predict", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            message: userText
+                        })
+                    });
+
+                    const data = await res.json();
+                    const reply = typeof data.answer === 'string' ? data.answer : data.answer[1];
+                    appendMessage(reply, 'bot');
+                } catch (err) {
+                    appendMessage("Terjadi kesalahan saat menghubungi server.", 'bot');
+                }
+            }
+
+
+            // Form submission handler
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const userText = chatInput.value.trim();
+                if (!userText) return;
+
+                appendMessage(userText, 'user');
+                chatInput.value = '';
+                sendBtn.disabled = true;
+
+                setTimeout(() => {
+                    botReply(userText);
+                }, 600);
+            });
+
+            // Focus input on load
+            window.onload = () => {
+                chatInput.focus();
+                // Tambahkan sapaan awal dari bot
+                appendMessage('Halo, masukkan nama anda', 'bot');
+            };
+        })();
+    </script>
+</body>
+
+</html>
